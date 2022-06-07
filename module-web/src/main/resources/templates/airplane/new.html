@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an airport.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager">
+    <meta name="author" content="Pavel Sklenar">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" th:href="@{../images/favicon-16x16.png}" type="image/png" sizes="16x16"/>
+    <link rel="icon" th:href="@{../images/favicon-32x32.png}" type="image/png" sizes="32x32"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" media="screen" th:href="@{/css/application.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title th:text="${#strings.capitalize(action)}+' airplane'"></title>
+    <style>
+        .active { background:#d9534f;}
+    </style>
+</head>
+<body style="background-color:cadetblue;">
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <div th:insert="nav/nav_admin :: nav"></div>
+    </div>
+    <div sec:authorize="hasAuthority('MANAGER')">
+        <div th:insert="nav/nav_manager :: nav"></div>
+    </div>
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <br>
+                <div class="card" style="border-top-right-radius: 35px; !important;border-top-left-radius: 35px; !important;margin-bottom: 40px;!important;border-bottom-right-radius: 35px; !important;border-bottom-left-radius: 35px; ">
+                    <div class="card-header text-center" style="font-size: 30px;background-color: #333;color:white;font-family: 'Pacifico', cursive;border-radius: 35px !important;" th:text="${#strings.capitalize(action)}+' airplane'"></div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                        </div>
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-md-8">
+                                <div class="alert alert-danger" role="alert" style="font-size: 16px;">
+                                    Fields marked with (<span style="color:red;">*</span>) are required.
+                                </div>
+                                <form method="POST" th:action="@{'/airplane/'+ ${action}}" th:object="${airplane}">
+                                    <input th:if="${airplane.getId() != null}" type="hidden" th:value="*{id}" th:attr="name='id'"/>
+                                    <div class="form-group">
+                                        <label for="manufacturer" class="text-left">Manufacturer(<span class="text-danger">*</span>)</label>
+                                        <select id="manufacturer" th:field="*{manufacturer}" style="color:black;text-align-last: center;" class="form-control">
+                                            <option value="">Choose manufacturer</option>
+                                            <option th:each="i : ${manufacturers}" th:value="${i}" th:text="${i}" th:selected="${i==1}"></option>
+                                        </select>
+                                        <div class="error" th:if="${#fields.hasErrors('manufacturer')}">
+                                            <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                            <p th:errors="*{manufacturer}">Manufacturer error</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="model"> Model (<span style="color:red;">*</span>)</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fa fa-plane"></i></div>
+                                            </div>
+                                            <input id="model" placeholder="Model of an airplane..." type="text" class="form-control" th:field="*{model}" autocomplete="on">
+                                        </div>
+                                        <div class="error" th:if="${#fields.hasErrors('model')}">
+                                            <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                            <p th:errors="*{model}">Model error</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="capacity"> Capacity (<span style="color:red;">*</span>)</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fa fa-info-circle"></i></div>
+                                            </div>
+                                            <input id="capacity" placeholder="Capacity of an airplane..." type="number" class="form-control" th:field="*{capacity}" autocomplete="on">
+                                        </div>
+                                        <div class="error" th:if="${#fields.hasErrors('capacity')}">
+                                            <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                            <p th:errors="*{capacity}">Capacity error</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="serialNumber"> Serial Number (<span style="color:red;">*</span>) </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                            </div>
+                                            <input id="serialNumber" placeholder="Serial number of an airplane..." type="text" class="form-control" th:field="*{serialNumber}" autocomplete="on">
+                                        </div>
+                                        <div class="error" th:if="${#fields.hasErrors('serialNumber')}" >
+                                            <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                            <p th:errors="*{serialNumber}">SerialNumber error</p>
+                                        </div>
+                                        <div th:if="${!#strings.isEmpty(unique_error)}" class="error">
+                                            <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                            <p th:text="${unique_error}">SerialNumber unique error</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button type="submit" class="btn btn-dark btn-block btn-lg" th:text="${#strings.capitalize(action)}">
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center" style="background-color: #333;color:white;font-size: 14px;border-bottom-left-radius: 35px; !important;border-bottom-right-radius: 35px; !important;;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:insert="layout :: layout_footer"></div>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>

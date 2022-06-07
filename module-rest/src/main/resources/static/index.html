@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>REST controller documentation</h2>
+    <p>Below you can find list of CURL commands which are supported</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>CURL command</th>
+            <th>Action</th>
+            <th>Parameters</th>
+            <th>Return type</th>
+            <th>Exception</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>curl -i -X GET http://localhost:9090/pa165/rest/stewards</td>
+            <td>Get list of Stewards</td>
+            <td>-</td>
+            <td>List&ltStewardDto&gt</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>curl -i -X GET http://localhost:9090/pa165/rest/stewards/{id}</td>
+            <td>Get single steward by id</td>
+            <td>id identifier for steward</td>
+            <td>StewardDto</td>
+            <td>ResourceNotFoundException</td>
+        </tr>
+        <tr>
+            <td>curl -i -X DELETE http://localhost:9090/pa165/rest/stewards/{id}</td>
+            <td>Delete steward by id</td>
+            <td>id identifier for steward</td>
+            <td>-</td>
+            <td>ResourceNotFoundException</td>
+        </tr>
+        <tr>
+            <td>curl -X POST -i -H "Content-Type: application/json" --data '{"firstName":"test","lastName":"test","citizenId":"test"}' http://localhost:9090/pa165/rest/stewards/create?userEmail=velky@gmail.com</td>
+            <td>Create a new steward</td>
+            <td>userEmail email of the user</td>
+            <td>-</td>
+            <td>ResourceAlreadyExistingException, IllegalEmailException</td>
+        </tr>
+        <tr>
+            <td>curl -X PUT -i -H "Content-Type: application/json" --data '{"firstName":"test","lastName":"test","citizenId":"test"}' http://localhost:9090/pa165/rest/stewards/{id}</td>
+            <td>Update existing steward</td>
+            <td>id identified of the steward</td>
+            <td>-</td>
+            <td>ResourceNotFoundException</td>
+        </tr>
+        <tr>
+            <td>curl -i -X GET http://localhost:9090/pa165/rest/stewards/available?from=2022-07-14 15:00&to=2022-07-16 15:00</td>
+            <td>Get list of stewards available for time period</td>
+            <td>from, to URL parameters for time interval</td>
+            <td>List&ltStewardDto&gt</td>
+            <td>ResourceNotFoundException</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

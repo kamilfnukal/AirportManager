@@ -1,0 +1,43 @@
+.error {
+    color: red;
+}
+
+.error i {
+    padding: 5px 10px 5px 10px;
+    vertical-align: middle;
+    float: left;
+}
+body { padding-bottom: 70px; }
+.menuField a, nav.efektMenu ul li a, .efektMenu .menuField .hoverList  { position: relative; }
+
+.menuField a:before, nav.efektMenu ul li a:before, .efektMenu .menuField .hoverList:before { display: block; }
+
+.menuField a:after, nav.efektMenu ul li a:after, .efektMenu .menuField .hoverList:after { position: absolute;left: 0;bottom: 0;right: 0;content: "";color: transparent; margin:auto; }
+
+.menuField a:hover, nav.efektMenu ul li a:hover, .efektMenu .menuField .hoverList:hover { z-index: 2; }
+
+.menuField a:hover:after, nav.efektMenu ul li a:hover:after, .efektMenu .menuField .hoverList:hover:after { animation-name: vyplneni; animation-duration: 1s; animation-fill-mode: forwards; z-index: -20; }
+
+.menuField a, .menuField .hoverList { text-decoration: none; text-transform: uppercase; }
+
+.ramecek{border-style: solid;margin-bottom:15px;margin-right: 15px;border-width: thin;}
+
+@keyframes vyplneni {
+    0% { width: 0%; }
+    40% { width: 100%; height: 0.5px;background-color: #6495ED; }
+    60% { width: 100%; width: 100%;background-color: #6495ED; }
+    100% { background-color: #6495ED; width: 100%; height: 100%; }
+
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

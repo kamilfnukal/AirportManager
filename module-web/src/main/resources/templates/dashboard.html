@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head th:replace="layout :: layout_head">
+</head> <!-- Author: Pavel Sklenar -->
+<body style="background-color:cadetblue;">
+<div sec:authorize="hasAuthority('ADMIN')">
+    <div th:insert="nav/nav_admin :: nav"></div>
+        <div class="container-fluid">
+            <div class="row" style="margin-top: 50px;">
+                <div class="col-lg-2 col-md-2 text-center"></div>
+                    <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                        <a th:href="@{/airplane/new}" style="cursor: pointer;color:black;text-decoration: none;">
+                            <div style="padding-top: 50px;padding-bottom:50px;">
+                                <img src="../static/images/airplane.png" alt="Create an airplane icon" height="128" width="128" title="Create airplane" style="margin-bottom:15px;" th:src="@{images/airplane.png}"/>
+                                <h4>Create airplane</h4>
+                            </div>
+                        </a>
+                 </div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/airport/new}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/airport.png" alt="Create an airport icon" height="128" width="128" title="Create airport" style="margin-bottom:15px;" th:src="@{images/airport.png}"/>
+                            <h4>Create airport</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/steward/new}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/steward.png" alt="Create a steward icon" height="128" width="128" title="Create steward" style="margin-bottom:15px;" th:src="@{images/steward.png}"/>
+                            <h4>Create steward</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/airplane/list}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/list_airplanes.png" alt="List of airplanes icon" height="128" width="128" title="List of airplanes" style="margin-bottom:15px;" th:src="@{images/list_airplanes.png}"/>
+                            <h4>List of Airplanes</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-2 col-md-2 text-center"></div>
+
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/airport/list}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/list_airports.png" alt="List of airports icon" height="128" width="128" title="List of airports" style="margin-bottom:15px;" th:src="@{images/list_airports.png}"/>
+                            <h4>List of Airports</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/steward/list}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/list_stewards.png" alt="List of stewards icon" height="128" width="128" title="List of stewards" style="margin-bottom:15px;" th:src="@{images/list_stewards.png}"/>
+                            <h4>List of Stewards</h4>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+</div>
+
+<div sec:authorize="hasAuthority('MANAGER')">
+    <div th:insert="nav/nav_manager :: nav"></div>
+        <div class="container-fluid">
+            <div class="row" style="margin-top: 50px;">
+
+                <div class="col-lg-2 col-md-2 text-center"></div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/flight/dates}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/flight.png" alt="Create a flight icon" height="128" width="128" title="Create flight" style="margin-bottom:15px;" th:src="@{images/flight.png}"/>
+                            <h4>Create flight</h4>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/airplane/list}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/list_airplanes.png" alt="List of airplanes icon" height="128" width="128" title="List of airplanes" style="margin-bottom:15px;" th:src="@{images/list_airplanes.png}"/>
+                            <h4>List of Airplanes</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/airport/list}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/list_airports.png" alt="List of airports icon" height="128" width="128" title="List of airports" style="margin-bottom:15px;" th:src="@{images/list_airports.png}"/>
+                            <h4>List of Airports</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/steward/list}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/list_stewards.png" alt="List of stewards icon" height="128" width="128" title="List of stewards" style="margin-bottom:15px;" th:src="@{images/list_stewards.png}"/>
+                            <h4>List of Stewards</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-2 col-md-2 text-center"></div>
+
+                <div class="col-lg-2 col-md-2 text-center ramecek" style="background-color: #F5F5F5;">
+                    <a th:href="@{/flight/list}" style="cursor: pointer;color:black;text-decoration: none;">
+                        <div style="padding-top: 50px;padding-bottom:50px;">
+                            <img src="../static/images/list_flights.png" alt="List of flights icon" height="128" width="128" title="List of flights" style="margin-bottom:15px;" th:src="@{images/list_flights.png}"/>
+                            <h4>List of Flights</h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
+    </div>
+</div>
+<div th:insert="layout :: layout_footer"></div>
+</body>
+
+</html>

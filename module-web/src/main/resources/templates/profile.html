@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an airport.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager">
+    <meta name="author" content="Pavel Sklenar">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" th:href="@{../images/favicon-16x16.png}" type="image/png" sizes="16x16"/>
+    <link rel="icon" th:href="@{../images/favicon-32x32.png}" type="image/png" sizes="32x32"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" media="screen" th:href="@{/css/application.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Airport Manager - Profile</title>
+    <style>
+        body { font-family: 'Nunito', sans-serif; }
+    </style>
+</head>
+<body style="background-color:cadetblue;">
+<div sec:authorize="hasAuthority('ADMIN')">
+    <div th:insert="nav/nav_admin :: nav"></div>
+</div>
+<div sec:authorize="hasAuthority('MANAGER')">
+    <div th:insert="nav/nav_manager :: nav"></div>
+</div>
+<br>
+<div class="container" style="background-color: white;padding:30px;border-radius: 25px;">
+    <div class="row">
+        <div class="col-12 text-center" style="margin-bottom: 15px;"><h1><span th:text="${user.getFirstName()}"></span> <span th:text="${user.getLastName()}"></span></h1><hr></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-stacked nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#obecneUdaje" style="font-size: 16px;">General information</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#zmenaHesla" style="font-size: 16px;">Change password</a>
+                </li>
+            </ul>
+            <br>
+            <div class="tab-content">
+                <div class="tab-pane active" id="obecneUdaje">
+                    <div class="alert alert-danger" role="alert" style="font-size: 16px;">
+                        Fields marked with <span style="color:red;">*</span> are required.
+                    </div>
+
+                    <div sec:authorize="hasAuthority('MANAGER')">
+                        <form class="form" th:action="@{'/manager/m_update'}" method="POST" th:object="${user}">
+
+                        <input th:if="${user.getId() != null}" type="hidden" th:value="*{id}" th:attr="name='id'"/>
+                        <div class="form-group">
+                            <label for="firstNameManager"><h4>First name <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-user"></i></div>
+                                </div>
+                                <input type="text" class="form-control" th:value="*{firstName}" th:field="*{firstName}" id="firstNameManager" placeholder="Your first name ..." autocomplete="on" autofocus>
+                            </div>
+                            <div class="error" th:if="${#fields.hasErrors('firstName')}" style="margin-top: 10px;">
+                                <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                <p th:errors="*{firstName}">First name error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="surnameManager"><h4>Surname <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-user"></i></div>
+                                </div>
+                                <input type="text" class="form-control" th:value="*{lastName}" th:field="*{lastName}" id="surnameManager" placeholder="Your surname ..." autocomplete="on">
+                            </div>
+                            <div class="error" th:if="${#fields.hasErrors('lastName')}" style="margin-top: 10px;">
+                                <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                <p th:errors="*{lastName}">Surname error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneManager"><h4> Phone <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-phone"></i></div>
+                                </div>
+                                <input type="text" class="form-control" th:value="*{phone}" th:field="*{phone}" id="phoneManager" placeholder="Your phone number ..." autocomplete="on">
+                            </div>
+                            <div class="error" th:if="${#fields.hasErrors('phone')}" style="margin-top: 10px;">
+                                <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                <p th:errors="*{phone}">Phone error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="emailManager"><h4>Email address</h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-envelope"></i></div>
+                                </div>
+                                <input type="email" class="form-control" id="emailManager" th:value="*{email}" th:field="*{email}" autocomplete="on" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-floppy-o"></i> Save</button>
+                        </div>
+                    </form>
+                  </div>
+
+                  <div sec:authorize="hasAuthority('ADMIN')">
+                    <form class="form" th:action="@{'/admin/a_update'}" method="POST" th:object="${user}">
+                        <input th:if="${user.getId() != null}" type="hidden" th:value="*{id}" th:attr="name='id'"/>
+                        <div class="form-group">
+                            <label for="firstNameAdmin"><h4>First name <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-user"></i></div>
+                                </div>
+                                <input type="text" class="form-control" th:value="*{firstName}" th:field="*{firstName}" id="firstNameAdmin" placeholder="Your first name ..." autocomplete="on" autofocus>
+                            </div>
+                            <div class="error" th:if="${#fields.hasErrors('firstName')}" style="margin-top: 10px;">
+                                <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                <p th:errors="*{firstName}">First name error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="surnameAdmin"><h4>Surname <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-user"></i></div>
+                                </div>
+                                <input type="text" class="form-control" th:value="*{lastName}" th:field="*{lastName}" id="surnameAdmin" placeholder="Your surname ..." autocomplete="on">
+                            </div>
+                            <div class="error" th:if="${#fields.hasErrors('lastName')}" style="margin-top: 10px;">
+                                <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                <p th:errors="*{lastName}">Surname error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneAdmin"><h4> Phone <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-phone"></i></div>
+                                </div>
+                                <input type="text" class="form-control" th:value="*{phone}" th:field="*{phone}" id="phoneAdmin" placeholder="Your phone number ..." autocomplete="on">
+                            </div>
+                            <div class="error" th:if="${#fields.hasErrors('phone')}" style="margin-top: 10px;">
+                                <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                <p th:errors="*{phone}">Phone error</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="emailAdmin"><h4>Email address</h4></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-envelope"></i></div>
+                                </div>
+                                <input type="email" class="form-control" id="emailAdmin" th:value="*{email}" th:field="*{email}" placeholder="Your email address ..." autocomplete="on" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg"><i class="fa fa-floppy-o"></i> Save</button>
+                        </div>
+                      </form>
+                    </div>
+                </div>
+                <div class="tab-pane" id="zmenaHesla">
+                    <div sec:authorize="hasAuthority('MANAGER')">
+                        <input type="button" class="btn btn-warning btn-sm" value="Generate password" onClick="generator_profile();" style="margin-bottom: 15px;">
+                        <form class="form" th:action="@{'/manager/m_update_password'}" method="POST" th:object="${user}">
+                            <input th:if="${user.getId() != null}" type="hidden" th:value="*{id}" th:attr="name='id'"/>
+                            <div class="form-group">
+                                <label for="password"><h4>Password <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fa fa-lock"></i></div>
+                                    </div>
+                                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Type password ..." title="Type new password." minlength="5" required>
+                                </div>
+                                <span toggle="#password" style="z-index: 3;float:right;margin-right: 12px;position: relative;bottom:25px;color:black;" class="fa fa-eye showPassword"></span>
+                                <script>
+                                    $(".showPassword").click(function() {
+                                        $(this).toggleClass("fa-eye fa-eye-slash");
+                                        var input = $($(this).attr("toggle"));
+                                        if (input.attr("type") == "password") {
+                                            input.attr("type", "text");
+                                        } else {
+                                            input.attr("type", "password");
+                                        }
+                                    });
+                                </script>
+                            </div>
+                            <div class="form-group">
+                                <label for="password_verify"><h4>Repeat password <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></div>
+                                    </div>
+                                    <input type="password" class="form-control" id="password_verify" placeholder="Repeat password ..." title="Repeat your password again." oninput="checkPasswords(this)" minlength="5">
+                                </div>
+                                <span toggle="#password_verify" style="z-index: 3;float:right;margin-right: 12px;position: relative;bottom:25px;color:black;" class="fa fa-eye showPasswordVerify"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                    <i class="fa fa-floppy-o"></i> Change password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div sec:authorize="hasAuthority('ADMIN')">
+                        <input type="button" class="btn btn-warning btn-sm" value="Generate password" onClick="generator_profile();" style="margin-bottom: 15px;">
+                        <form class="form" th:action="@{'/admin/a_update_password'}" method="POST" th:object="${user}">
+                            <input th:if="${user.getId() != null}" type="hidden" th:value="*{id}" th:attr="name='id'"/>
+                            <div class="form-group">
+                                <label for="password"><h4>Password <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fa fa-lock"></i></div>
+                                    </div>
+                                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Type password ..." title="Type new password." minlength="5" required>
+                                </div>
+                                <span toggle="#password" style="z-index: 3;float:right;margin-right: 12px;position: relative;bottom:25px;color:black;" class="fa fa-eye showPassword"></span>
+                                <script>
+                                    $(".showPassword").click(function() {
+                                        $(this).toggleClass("fa-eye fa-eye-slash");
+                                        var input = $($(this).attr("toggle"));
+                                        if (input.attr("type") == "password") {
+                                            input.attr("type", "text");
+                                        } else {
+                                            input.attr("type", "password");
+                                        }
+                                    });
+                                </script>
+                            </div>
+                            <div class="form-group">
+                                <label for="password_verify"><h4>Repeat password <span class="text-danger" style="font-size: 18px;">*</span></h4></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></div>
+                                    </div>
+                                    <input type="password" class="form-control" id="password_verify" placeholder="Repeat password ..." title="Repeat your password again." oninput="checkPasswords(this)" minlength="5">
+                                </div>
+                                <span toggle="#password_verify" style="z-index: 3;float:right;margin-right: 12px;position: relative;bottom:25px;color:black;" class="fa fa-eye showPasswordVerify"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                    <i class="fa fa-floppy-o"></i> Change password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function generator_profile() {
+        var znaky = "PQRSTUVWXYZ123!@#$()4567890abcd+efghijklm-nop456789qABCDEFGHIJKLMNOrst456789uvwxyz";
+        var heslo = "";
+        var i = 0;
+        while(i < 10){
+            heslo += znaky.charAt(Math.floor(Math.random()*znaky.length));
+            i++;
+        }
+        document.getElementById("password").value = heslo;
+        document.getElementById("password_verify").value = heslo;
+    }
+
+    function checkPasswords(password_verify) {
+        if (password_verify.value != document.getElementById('password').value) {
+            password_verify.setCustomValidity('Password Must be Matching.');
+        } else {
+            password_verify.setCustomValidity('');
+        }
+    }
+
+    $(".showPasswordVerify").click(function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+</script>
+
+<div th:insert="layout :: layout_footer"></div>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>

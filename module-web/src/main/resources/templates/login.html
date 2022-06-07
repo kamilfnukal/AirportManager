@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an airport.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager">
+    <meta name="author" content="Pavel Sklenar">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" th:href="@{images/favicon-16x16.png}" type="image/png" sizes="16x16"/>
+    <link rel="icon" th:href="@{images/favicon-32x32.png}" type="image/png" sizes="32x32"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" media="screen" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" media="screen" th:href="@{/css/application.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Airport Manager - Login</title>
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+    </style>
+</head>
+<body class="background">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <br><br>
+            <div class="card" style="margin-top: 30px;border-radius: 20px !important;">
+                <div class="card-header text-center" style="background-color: #333;color:white;font-size: 28px;font-family: 'Pacifico', cursive;border-radius: 35px !important;">
+                  Airport Manager
+                </div>
+                <div class="card-body">
+                    <form name="f" method="POST" th:action="@{/login}">
+                        <center>
+                            <div th:if="${param.error}" class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                Invalid username and password.
+                            </div>
+                            <div th:if="${param.logout}" class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert">x</button>
+                                You have been logged out.
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="col-md-4"></label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-envelope"></i></div>
+                                        </div>
+                                        <input id="email" class="form-control form-control-lg" name="username" placeholder="Email address" autocomplete="on" autofocus>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-md-4"></label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-lock" style="padding-right: 5px;"></i></div>
+                                        </div>
+                                        <input id="password" type="password" class="form-control form-control-lg" placeholder="Password" name="password">
+                                    </div>
+                                    <span toggle="#password" style="z-index: 3;float:right;margin-right: 12px;position: relative;bottom:30px;color:black;" class="fa fa-eye showPassword"></span>
+                                </div>
+                            </div>
+                        </center>
+                        <script>
+                            $(".showPassword").click(function() {
+                                $(this).toggleClass("fa-eye fa-eye-slash");
+                                var input = $($(this).attr("toggle"));
+                                if (input.attr("type") == "password") {
+                                    input.attr("type", "text");
+                                } else {
+                                    input.attr("type", "password");
+                                }
+                            });
+                        </script>
+                        <br>
+                        <div class="form-group">
+                            <div class="col-md-8 offset-md-2">
+                                <button type="submit" class="btn btn-secondary btn-lg btn-block">Login</button><br>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center" style="background-color: #333;color:white;font-size: 14px;border-radius: 35px !important;">
+                    PA165 Project &copy; 2022 created by: Pavel Sklenář, Kamil Fňukal, Matej Michálek, Martin Kalina.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>

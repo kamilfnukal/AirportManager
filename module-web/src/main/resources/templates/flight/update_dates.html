@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an airport.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager">
+    <meta name="author" content="Kamil Fnukal">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" th:href="@{../images/favicon-16x16.png}" type="image/png" sizes="16x16"/>
+    <link rel="icon" th:href="@{../images/favicon-32x32.png}" type="image/png" sizes="32x32"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" media="screen" th:href="@{/css/application.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title th:text="${#strings.capitalize(action)}+' flight'"></title>
+    <style>
+        .active { background:#d9534f;}
+    </style>
+</head>
+<body style="background-color:cadetblue;">
+<div sec:authorize="hasAuthority('ADMIN')">
+    <div th:insert="nav/nav_admin :: nav"></div>
+</div>
+<div sec:authorize="hasAuthority('MANAGER')">
+    <div th:insert="nav/nav_manager :: nav"></div>
+</div>
+
+<div class="container" style="margin-bottom:30px;">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <br><br>
+            <div class="card"
+                 style="border-top-right-radius: 35px; !important;border-top-left-radius: 35px; !important;margin-bottom: 40px;!important;border-bottom-right-radius: 35px; !important;border-bottom-left-radius: 35px; ">
+                <div class="card-header text-center"
+                     style="font-size: 30px;background-color: #333;color:white;font-family: 'Pacifico', cursive;border-radius: 35px !important;"
+                     th:text="${#strings.capitalize(action)}+' flight'"></div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                    </div>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-md-8">
+                            <div class="alert alert-warning" role="alert" style="font-size: 16px;">
+                                Fields marked with (<span style="color:red;">*</span>) are required.
+                            </div>
+                            <form method="POST" th:action="@{/flight/{id}/dates(id=${flightId})}" th:object="${dates}">
+                                <div class="form-group">
+                                    <label for="departureTime"> Departure time (<span style="color:red;">*</span>)
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <input id="departureTime" name="departureTime" placeholder="Select departure time"
+                                               type="datetime-local" class="form-control" th:value="${dates.getDepartureTime()}">
+
+                                    </div>
+                                    <div class="error" th:if="${#fields.hasErrors('departureTime')}">
+                                        <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                        <p th:errors="*{departureTime}">Departure time error</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="arrivalTime"> Arrival time (<span style="color:red;">*</span>)
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <input id="arrivalTime" name="arrivalTime" placeholder="Select arrival time"
+                                               type="datetime-local" class="form-control" th:value="${dates.getArrivalTime()}">
+
+                                    </div>
+                                    <div class="error" th:if="${#fields.hasErrors('arrivalTime')}">
+                                        <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                        <p th:errors="*{arrivalTime}">Arrival time error</p>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-dark btn-block btn-lg"
+                                            th:text="Continue">
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center"
+                     style="background-color: #333;color:white;font-size: 14px;border-bottom-left-radius: 35px; !important;border-bottom-right-radius: 35px; !important;;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:insert="layout :: layout_footer"></div>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+<script>
+
+
+
+    flatpickr("input[type=datetime-local]", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today",
+        mode: 'single',
+        time_24hr: true
+    })
+
+    function change_string(from, to){
+        var sel = document.getElementById(from);
+        var text= sel.options[sel.selectedIndex].text;
+        document.getElementById(to).value = text;
+    }
+</script>
+</body>
+</html>

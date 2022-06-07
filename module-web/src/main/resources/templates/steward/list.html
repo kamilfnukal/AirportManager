@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an stewards.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager, steward">
+    <meta name="author" content="Martin Kalina">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" th:href="@{../images/favicon-16x16.png}" type="image/png" sizes="16x16"/>
+    <link rel="icon" th:href="@{../images/favicon-32x32.png}" type="image/png" sizes="32x32"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" media="screen" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" media="screen" th:href="@{/css/application.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Stewards</title>
+    <style>
+        .active { background:#d9534f;}
+    </style>
+</head>
+<body style="background-color:cadetblue;">
+<div sec:authorize="hasAuthority('ADMIN')">
+    <div th:insert="nav/nav_admin :: nav"></div>
+</div>
+<div sec:authorize="hasAuthority('MANAGER')">
+    <div th:insert="nav/nav_manager :: nav"></div>
+</div>
+<div th:insert="layout :: layout_alerts"></div>
+<br><br>
+<div class="container" style="background-color: white;padding:50px;border-radius: 25px;">
+    <div class="card-header text-center" style="font-size: 30px;background-color: #333;color:white;font-family: 'Pacifico', cursive;border-radius: 35px !important;">List of Stewards</div>
+    <br>
+    <table class="table table-striped table-bordered" style="background-color:white">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Citizen id</th>
+            <th>First name</th>
+            <th>Surname</th>
+            <th width="20%" sec:authorize="hasAuthority('ADMIN')" class="text-center">
+                Actions
+                <button style="float:right;font-weight: 200;" class="btn btn-success btn-sm" type="button"> <a style="text-decoration: none;color:white;" th:href="@{/steward/new}"><i class="fa fa-plus-square"></i> Create</a></button>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="steward : ${stewards}">
+            <td th:text="${steward.getId()}"></td>
+            <td th:text="${steward.getCitizenId()}"></td>
+            <td th:text="${steward.getFirstName()}"></td>
+            <td th:text="${steward.getLastName()}"></td>
+            <td sec:authorize="hasAuthority('ADMIN')" class="text-center">
+                <button type="button" class="btn btn-primary btn-sm"><a style="text-decoration: none;color:white;" th:href="@{/steward/{id}/edit(id=${steward.getId()})}"><i class="fa-lg fa-solid fa-pencil" style="font-size: 17px;"></i> Edit</a></button>
+
+                <button type="button" class="btn btn-danger btn-sm">
+                    <a th:id="'delete_'+${steward.getId()}" style="text-decoration: none;color:white;" class="delete" title="Delete" data-toggle="tooltip"
+                       onclick="
+                            let entityId = this.id.substring(this.id.indexOf('_') + 1);
+                            let result = confirm('Are you sure you want to delete?');
+                            if(result) {document.getElementById('deleteForm_'+entityId).submit();}
+                            return false;">
+                        <i class="fa-lg fa-regular fa-trash-can" style="font-size: 17px;color:white;"></i>
+                        Delete
+                    </a>
+                    <form th:id="'deleteForm_'+${steward.getId()}" class="d-none" th:action="@{/steward/{id}/delete(id=${steward.getId()})}" method="post">
+                        <input class="" type="submit" value="Delete"/>
+                    </form>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:insert="layout :: layout_footer"></div>
+
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

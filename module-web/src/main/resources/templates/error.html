@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an airport.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager">
+    <meta name="author" content="Pavel Sklenar">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="icon" th:href="@{/images/favicon-16x16.png}" type="image/png" sizes="16x16"/>
+    <link rel="icon" th:href="@{/images/favicon-32x32.png}" type="image/png" sizes="32x32"/>
+    <title>Error 404</title>
+</head>
+<style>
+    .customError { height: 100vh; }
+</style>
+<body>
+    <div class="d-flex justify-content-center align-items-center customError">
+        <img src="../static/images/airport.png" alt="Create an airport icon" height="500" width="450" title="Create airport" style="margin-bottom:15px;" th:src="@{/images/error_airplane.jpg}"/>
+        <div class="align-content-center">
+            <h1 class="border-right mr-3 pr-3">404</h1>
+        </div>
+        <div class="align-middle">
+            <h2 class="font-weight-normal lead">Requested page was not found.</h2>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>

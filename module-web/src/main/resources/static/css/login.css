@@ -1,0 +1,11 @@
+.background {
+    width: 100%;
+    background-image: url('../images/login_pozadi.png');
+}
+.card {
+    background-image: url('../images/card_login_pozadi.png');
+}
+
+.card-body {
+    background-image: url('../images/card_login_pozadi.png');
+}

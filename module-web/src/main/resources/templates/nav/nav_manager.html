@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an airport.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager">
+    <meta name="author" content="Matej Michálek">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark" style="background:rgba(0,0,0,0.85);"
+     th:fragment="nav"
+     th:with="currentPage=${#request.getRequestURI().substring(#request.getContextPath().length())}">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarCollapsed" aria-controls="navbarCollapsed" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand" style="font-size: 25px;margin-left: 5px;color:rgba(255, 255, 255, 0.95);font-family: 'Pacifico', cursive;" th:href="@{/dashboard}">Airport Manager</a>
+
+    <div class="collapse navbar-collapse" id="navbarCollapsed">
+        <ul class="navbar-nav">
+            <li class="nav-item menuField" th:classappend="${currentPage.startsWith('/dashboard') ? 'active':''}">
+                <a style="padding-left:30px;padding-right:30px;color:rgba(255, 255, 255, 0.95);font-family: 'Roboto', sans-serif;text-decoration: none;padding-bottom: 20px;padding-top: 20px;font-size:18px;" class="nav-link" th:href="@{/dashboard} "><i class="fa fa-cube"></i> Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item menuField" th:classappend="${currentPage.startsWith('/airplane') ? 'active':''}">
+                <a style="padding-left:30px;padding-right:30px;color:rgba(255, 255, 255, 0.95);font-family: 'Roboto', sans-serif;text-decoration: none;padding-bottom: 20px;padding-top: 20px;font-size:18px;" class="nav-link" th:href="@{/airplane/list}"><i class="fa fa-plane"></i> Airplanes</a>
+            </li>
+            <li class="nav-item menuField" th:classappend="${currentPage.startsWith('/airport') ? 'active':''}">
+                <a style="padding-left:30px;padding-right:30px;color:rgba(255, 255, 255, 0.95);font-family: 'Roboto', sans-serif;text-decoration: none;padding-bottom: 20px;padding-top: 20px;font-size:18px;" class="nav-link" th:href="@{/airport/list}"><i class="fa fa-building" aria-hidden="true"></i> Airports</a>
+            </li>
+            <li class="nav-item menuField" th:classappend="${currentPage.startsWith('/steward') ? 'active':''}">
+                <a style="padding-left:30px;padding-right:30px;color:rgba(255, 255, 255, 0.95);font-family: 'Roboto', sans-serif;text-decoration: none;padding-bottom: 20px;padding-top: 20px;font-size:18px;" class="nav-link" th:href="@{/steward/list}"><i class="fa fa-address-book" aria-hidden="true"></i> Stewards</a> <!--TODO: stewards page-->
+            </li>
+            <li class="nav-item menuField" th:classappend="${currentPage.startsWith('/flight') ? 'active':''}">
+                <a style="padding-left:30px;padding-right:30px;color:rgba(255, 255, 255, 0.95);font-family: 'Roboto', sans-serif;text-decoration: none;padding-bottom: 20px;padding-top: 20px;font-size:18px;" class="nav-link" th:href="@{/flight/list}"><i class="fa fa-th-list" aria-hidden="true"></i> Flights</a> <!-- TODO: flights page-->
+            </li>
+            <li class="nav-item d-md-none menuField">
+                <a class="nav-link" href="javascript:{}"
+                   onclick="document.getElementById('logoutForm').submit(); return false;">Logout</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-expand d-none d-md-block" data-toggle="collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item menuField dropdown">
+                <a class="nav-link dropdown-toggle" id="profileDropdown" role="button"
+                   style="color:rgba(255, 255, 255, 0.95);" data-toggle="dropdown"><i class="fa fa-user" style="padding:10px;font-size: 25px;margin-right: 4px;"></i></a>
+                <div class="dropdown-menu bg-dark dropdown-menu-right">
+                    <a class="nav-link text-center" th:href="@{/manager/m_profile}">Profile</a>
+                    <a class="nav-link text-center" href="javascript:{}"
+                       onclick="document.getElementById('logoutForm').submit(); return false;">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <form id="logoutForm" class="d-none" th:action="@{/logout}" method="post">
+        <input class="" type="submit" value="Logout"/>
+    </form>
+</nav>
+</body>
+</html>

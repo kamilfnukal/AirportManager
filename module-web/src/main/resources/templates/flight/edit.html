@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta name="description" content="Airport Manager application which is used to manage an airport.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="airport, airplane, airport manager">
+    <meta name="author" content="Kamil Fnukal">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" th:href="@{../images/favicon-16x16.png}" type="image/png" sizes="16x16"/>
+    <link rel="icon" th:href="@{../images/favicon-32x32.png}" type="image/png" sizes="32x32"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" media="screen" th:href="@{/css/application.css}"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title th:text="${#strings.capitalize(action)}+' flight'"></title>
+    <style>
+        .active { background:#d9534f;}
+    </style>
+</head>
+<body style="background-color:cadetblue;">
+<div sec:authorize="hasAuthority('ADMIN')">
+    <div th:insert="nav/nav_admin :: nav"></div>
+</div>
+<div sec:authorize="hasAuthority('MANAGER')">
+    <div th:insert="nav/nav_manager :: nav"></div>
+</div>
+
+<div class="container" style="margin-bottom:30px;">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <br><br>
+            <div class="card"
+                 style="border-top-right-radius: 35px; !important;border-top-left-radius: 35px; !important;margin-bottom: 40px;!important;border-bottom-right-radius: 35px; !important;border-bottom-left-radius: 35px; ">
+                <div class="card-header text-center"
+                     style="font-size: 30px;background-color: #333;color:white;font-family: 'Pacifico', cursive;border-radius: 35px !important;"
+                     th:text="${#strings.capitalize(action)}+' flight'"></div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                    </div>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-md-8">
+                            <div class="alert alert-warning" role="alert" style="font-size: 16px;">
+                                Fields marked with (<span style="color:red;">*</span>) are required.
+                            </div>
+                            <form method="POST" th:action="@{'/flight/'+ ${action}}" th:object="${flight}">
+                                <input th:if="${flight.getId() != null}" type="hidden" th:value="*{id}"
+                                       th:attr="name='id'"/>
+                                <div class="form-group">
+                                    <label for="departureTime"> Departure time (<span style="color:red;">*</span>)
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <input id="departureTime"  type="text" class="form-control" th:field="*{departureTime}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="departureTime"> Arrival time (<span style="color:red;">*</span>)
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <input id="arrivalTime"  type="text" class="form-control" th:field="*{arrivalTime}" readonly>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label> Origin (<span style="color:red;">*</span>) </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <select id="select-origin" th:field="*{originId}"
+                                                class="custom-select">
+                                            <option value="0">Select origin airport</option>
+                                            <option th:each="airport : ${airports}"
+                                                    th:value="${airport.getId()}"
+                                                    th:text="${airport.getCode()+ ', ' + airport.getName()}"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="error" th:if="${#fields.hasErrors('originId')}">
+                                        <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                        <p th:errors="*{originId}">Destination error</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label> Destination (<span style="color:red;">*</span>) </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <select id="select-dest" th:field="*{destinationId}"
+                                                class="custom-select">
+                                            <option value="0" >Select destination airport</option>
+                                            <option th:each="airport : ${airports}"
+                                                    th:value="${airport.getId()}"
+                                                    th:text="${airport.getCode() + ', ' + airport.getName()}"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="error" th:if="${#fields.hasErrors('destinationId')}">
+                                        <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                        <p th:errors="*{destinationId}">Destination error</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label> Airplane (<span style="color:red;">*</span>) </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <select id="select-airplane" th:field="*{airplaneId}"
+                                                class="custom-select">
+                                            <option value="0">Select airplane</option>
+                                            <option th:each="airplane : ${airplanes}"
+                                                    th:value="${airplane.getId()}"
+                                                    th:text="${airplane.getManufacturer()+ ', ' + airplane.getSerialNumber()+ ', Capacity: ' + airplane.getCapacity()}"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="error" th:if="${#fields.hasErrors('airplaneId')}">
+                                        <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                        <p th:errors="*{airplaneId}">Airplane error</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label> Stewards </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+                                        </div>
+                                        <button type="button" class="form-control" data-toggle="modal"
+                                                data-target="#airportModal4">
+                                            Choose stewards
+                                        </button>
+                                        <div class="modal fade" id="airportModal4" tabindex="-1" role="dialog"
+                                             aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle4">Choose
+                                                            stewards</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div th:each="steward : ${all_stewards}">
+                                                            <input name="stewardIds" type="checkbox" th:value="${steward.id}" th:field="*{stewardIds}"
+                                                            />
+                                                            <span th:text="${steward.getFirstName() +' ' + steward.getLastName()}">Steward</span><br/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button"
+                                                                class="btn btn-primary btn-dark"
+                                                                data-dismiss="modal">
+                                                            <a style="text-decoration: none;color:white;">Save
+                                                                changes</a>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="error" th:if="${#fields.hasErrors('stewardIds')}">
+                                        <i class="fa fa-circle-exclamation" aria-hidden="true"></i>
+                                        <p th:errors="*{stewardIds}">Stewards error</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-dark btn-block btn-lg"
+                                            th:text="${#strings.capitalize(action)}">
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center"
+                     style="background-color: #333;color:white;font-size: 14px;border-bottom-left-radius: 35px; !important;border-bottom-right-radius: 35px; !important;;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:insert="layout :: layout_footer"></div>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+<script>
+    flatpickr("input[type=datetime-local]", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today",
+    });
+
+    function change_string(from, to){
+        var sel = document.getElementById(from);
+        var text= sel.options[sel.selectedIndex].text;
+        document.getElementById(to).value = text;
+    }
+
+</script>
+</body>
+</html>
